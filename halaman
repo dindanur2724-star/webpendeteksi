@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Deteksi Link Berbahaya</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #e3f2fd, #ffffff);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            width: 420px;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #64b5f6;
+            box-shadow: 0 0 6px rgba(100,181,246,0.6);
+        }
+
+        button {
+            margin-top: 15px;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: #64b5f6;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #42a5f5;
+        }
+
+        .hasil {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .aman {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .waspada {
+            background: #fff8e1;
+            color: #f9a825;
+        }
+
+        .bahaya {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .info {
+            margin-top: 15px;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Deteksi Link Berbahaya</h1>
+
+    <input type="text" id="linkInput" placeholder="Masukkan link (contoh: http://example.com)">
+
+    <button onclick="cekLink()">Cek Link</button>
+
+    <div id="hasil" class="hasil"></div>
+
+    <div class="info">
+        * Deteksi ini bersifat edukasi, bukan sistem keamanan profesional
+    </div>
+</div>
+
+<script>
+    function cekLink() {
+        const link = document.getElementById("linkInput").value.toLowerCase();
+        const hasil = document.getElementById("hasil");
+
+        // Kata kunci mencurigakan
+        const kataBerbahaya = [
+            "free",
+            "login",
+            "verify",
+            "update",
+            "secure",
+            "account",
+            "bank",
+            "paypal",
+            "click",
+            "bonus"
+        ];
+
+        if (link === "") {
+            alert("Masukkan link terlebih dahulu!");
+            return;
+        }
+
+        // Deteksi HTTP (tidak aman)
+        if (link.startsWith("http://")) {
+            hasil.className = "hasil waspada";
+            hasil.textContent = "⚠️ LINK MENCURIGAKAN (Tidak menggunakan HTTPS)";
+            hasil.style.display = "block";
+            return;
+        }
+
+        // Cek kata berbahaya
+        for (let kata of kataBerbahaya) {
+            if (link.includes(kata)) {
+                hasil.className = "hasil bahaya";
+                hasil.textContent = "❌ LINK BERBAHAYA (Terindikasi phishing / scam)";
+                hasil.style.display = "block";
+                return;
+            }
+        }
+
+        // Jika aman
+        hasil.className = "hasil aman";
+        hasil.textContent = "✅ LINK TERLIHAT AMAN";
+        hasil.style.display = "block";
+    }
+</script>
+
+</body>
+</html>
